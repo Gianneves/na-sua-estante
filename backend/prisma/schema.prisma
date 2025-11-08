@@ -17,7 +17,7 @@ datasource db {
 model User {
   id String @id @default(uuid(7)) @db.Uuid
   name String
-  nickname String
+  nickname String?
   email String @unique
   password String
   profile_photo String?
