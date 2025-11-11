@@ -32,7 +32,8 @@ export const userController = {
             if (!name || !email || !password) return res.status(400).json({ message: "Nome, email e senha são obrigatórios" })
 
             const salt = 10
-            const secretKey: string | undefined = process.env.SECRET_KEY ?? 'str_secret_key'
+            const secretKey: string | undefined = process.env.SECRET_KEY 
+            if (!secretKey) throw new Error('SECRET_KEY not set')
 
             const hasPass = await bcrypt.hash(password, salt)
 
