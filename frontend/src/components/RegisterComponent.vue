@@ -17,6 +17,7 @@ import CardFooter from './ui/card/CardFooter.vue';
 import Label from './ui/label/Label.vue';
 import Separator from './ui/separator/Separator.vue';
 import Input from './ui/input/Input.vue';
+import Register from './RegisterCard.vue';
 
 
 const props = defineProps({
@@ -115,34 +116,7 @@ console.log(props.buttonContent)
                                 <Separator class="h-0 border-t border-dashed bg-transparent" />
                             </div>
 
-                            <Card>
-                                <CardContent class="space-y-2">
-                                    <div class="space-y-1">
-                                        <Label for="name">Nome Completo</Label>
-                                        <Input id="name" type="text" />
-                                    </div>
-                                    <div class="space-y-1">
-                                        <Label for="nickname">Nome de user</Label>
-                                        <Input id="nickname" type="text" />
-                                    </div>
-
-                                    <div class="space-y-1">
-                                        <Label for="email">E-mail</Label>
-                                        <Input id="email" type="email" default-value="seu@email.com" />
-                                    </div>
-                                    <div class="space-y-1">
-                                        <Label for="password">Senha</Label>
-                                        <Input id="password" type="password" />
-                                    </div>
-                                       <div class="space-y-1">
-                                        <Label for="password-confirm">Confirmar Senha</Label>
-                                        <Input id="password-confirm" type="password" />
-                                    </div>
-                                </CardContent>
-                                <CardFooter>
-                                    <Button class="w-full">Criar conta</Button>
-                                </CardFooter>
-                            </Card>
+                            <Register />
                         </TabsContent>
                     </Tabs>
                 </DialogDescription>
