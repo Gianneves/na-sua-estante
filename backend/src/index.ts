@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import { bookRoutes } from "./routes/book.route.ts";
 import { userRoutes } from "./routes/user.route.ts";
 
+import { authRoutes } from "./routes/auth.route.ts";
+
 dotenv.config();
 
 const app = express()
@@ -15,6 +17,7 @@ const port = process.env.PORT
 
 app.use('/api/v1/books/', bookRoutes)
 app.use('/api/v1/users/', userRoutes)
+app.use('/api/v1/auth/', authRoutes)
 
 app.listen(port, () => {
     console.log(`servidor rodando na porta ${port}`)
