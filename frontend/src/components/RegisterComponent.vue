@@ -18,6 +18,7 @@ import Label from './ui/label/Label.vue';
 import Separator from './ui/separator/Separator.vue';
 import Input from './ui/input/Input.vue';
 import Register from './RegisterCard.vue';
+import LoginCard from './LoginCard.vue';
 
 
 const props = defineProps({
@@ -79,21 +80,7 @@ console.log(props.buttonContent)
                                 <Separator class="h-0 border-t border-dashed bg-transparent" />
                             </div>
 
-                            <Card class="flex justify-center">
-                                <CardContent class="space-y-2">
-                                    <div class="space-y-1">
-                                        <Label for="email">E-mail</Label>
-                                        <Input id="email" type="email" default-value="seu@email.com" />
-                                    </div>
-                                    <div class="space-y-1">
-                                        <Label for="password">Senha</Label>
-                                        <Input id="password" type="password" />
-                                    </div>
-                                </CardContent>
-                                <CardFooter>
-                                    <Button class="w-full">Entrar</Button>
-                                </CardFooter>
-                            </Card>
+                            <LoginCard />
                         </TabsContent>
                         <TabsContent class="flex flex-col" value="register">
                             <Button variant="ghost" class="my-2">

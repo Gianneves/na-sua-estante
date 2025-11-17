@@ -10,7 +10,14 @@ export const userController = {
 
     getUsers: async (req: Request, res: Response) => {
         try {
-            const users = await prisma.user.findMany({})
+            const users = await prisma.user.findMany({
+                select: {
+                    id: true,
+                    name: true,
+                    nickname: true,
+                    email: true,
+                }
+            })
 
             if(!users) return res.status(404).json({ message: "Usuários não encontrados" })
 

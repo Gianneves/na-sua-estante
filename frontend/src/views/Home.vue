@@ -7,7 +7,7 @@ type ButtonVariant =
   | { type: 'sign'; buttonContent: 'Entrar' | 'Já tenho conta' }
   | { type: 'register'; buttonContent: 'Criar conta' | 'Começar gratuitamente' };
 
-const props = defineProps<ButtonVariant>()
+defineProps<ButtonVariant>()
 
 </script>
 
