@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import InitialLayout from '@/Layouts/InitialLayout.vue';
+
+
+</script>
+
 <template>
-    teste
+    <InitialLayout>
+           teste
+    </InitialLayout>
+ 
 </template>

@@ -2,11 +2,7 @@
 import RegisterComponent from '@/components/RegisterComponent.vue';
 import { BookOpen } from 'lucide-vue-next';
 
-type ButtonVariant =
-  | { type: 'sign'; buttonContent: 'Entrar' | 'Já tenho conta' }
-  | { type: 'register'; buttonContent: 'Criar conta' | 'Começar gratuitamente' };
 
-const props = defineProps<ButtonVariant>()
 
 </script>
 
@@ -23,5 +19,13 @@ const props = defineProps<ButtonVariant>()
                 <RegisterComponent :type="'register'" :buttonContent="'Criar conta'" />
             </div>
         </nav>
+    </section>
+
+    <section>
+        <slot></slot>
+    </section>
+
+    <section>
+        footer
     </section>
 </template>

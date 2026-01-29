@@ -27,7 +27,6 @@ const props = defineProps({
 })
 </script>
 
-console.log(props.buttonContent)
 
 <template>
     <Dialog>
