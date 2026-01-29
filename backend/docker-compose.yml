@@ -11,7 +11,8 @@ services:
     env_file:
       - .env 
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      # MUDANÇA AQUI: Remova o "/data" do final do caminho do container
+      - pgdata:/var/lib/postgresql 
 
 volumes:
   pgdata:
