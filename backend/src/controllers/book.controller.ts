@@ -1,76 +1,71 @@
 import type { Request, Response } from "express";
-
-import { prisma } from "../lib/prisma.ts";
+import { bookService } from "../services/book.service.ts";
 
 export const bookController = {
     getBooks: async (req: Request, res: Response) => {
         try {
-            const books = await prisma.book.findMany({})
-
-            if (!books) return res.status(404).json({ message: "Nenhum livro encontrado" })
+            const books = await bookService.getAllBooks()
 
             return res.status(200).json({ success: true, books })
 
-        } catch (error) {
-            console.error("Erro interno")
-            res.status(500).json({ message: "Erro interno!" })
+        } catch (e: any) {
+            if (e.message === "NOT_FOUND") {
+                return res.status(404).json({ message: "Livros não encontrados" });
+            }
+
+            console.error("Erro interno:", e);
+            return res.status(500).json({ message: "Erro interno!" });
         }
     },
 
     getAllCategoriers: async (req: Request, res: Response) => {
         try {
-            const category = await prisma.book.findMany({
-                select: {
-                    category: true
-                }
-            })
+            const categories = await bookService.getAllCategoriers()
 
-            if (!category) return res.status(404).json({ message: "Nenhum livro encontrado" })
+            return res.status(200).json({ success: true, categories })
+        } catch (e: any) {
+            if (e.message === "NOT_FOUND") {
+                return res.status(404).json({ message: "Preços não encontrados" });
+            }
 
-            return res.status(200).json({ success: true, category })
-        } catch(e) {
-
+            console.error("Erro interno:", e);
+            return res.status(500).json({ message: "Erro interno!" });
         }
     },
 
     getBooksByCategory: async (req: Request, res: Response) => {
         try {
             const { category } = req.params
-            if (!category) return res.status(404).json({ message: "Categoria não encontrada" })
 
-            const books = await prisma.book.findMany({
-                select: {
-                    id: true,
-                    title: true,
-                    description: true
-                },
-                where: {
-                    category: category
-                }
-            })
+            if (!category) return res.status(400).json({ message: "Por favor, diga a categoria" })
 
-            res.status(200).json({ books })
+            const books = await bookService.getBooksByCategory(category)
 
-        } catch (e) {
-            console.error("Erro interno")
-            res.status(500).json({ message: "Erro interno!" })
+            return books
+        } catch (e: any) {
+            if (e.message === "NOT_FOUND") {
+                return res.status(404).json({ message: "Categoria não encontrada" });
+            }
+
+            console.error("Erro interno:", e);
+            return res.status(500).json({ message: "Erro interno!" });
         }
     },
 
     getAllPrices: async (req: Request, res: Response) => {
         try {
-            const prices = await prisma.book.findMany({
-                select: {
-                    price: true
-                }
-            })
-
-            if (!prices) return res.status(404).json({ message: "Preços não encontrados" })
+            const prices = await bookService.getAllPrices()
 
             return res.status(200).json({ success: true, prices })
-        } catch (e) {
-            console.error("Erro interno")
-            res.status(500).json({ message: "Erro interno!" })
+
+        } catch (e: any) {
+            if (e.message === "NOT_FOUND") {
+                return res.status(404).json({ message: "Preços não encontrados" });
+            }
+
+            console.error("Erro interno:", e);
+            return res.status(500).json({ message: "Erro interno!" });
         }
     }
 }
+

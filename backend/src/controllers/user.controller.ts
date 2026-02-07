@@ -4,12 +4,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { userService } from "../services/user.service.ts";
+import { User } from "../interfaces/user.interface.ts";
+import { createSecureServer } from "http2";
 
 
 export const userController = {
 
     getOneUser: async (req: Request, res: Response) => {
-          try {
+        try {
             const users = await prisma.user.findMany({
                 select: {
                     id: true,
@@ -19,7 +22,7 @@ export const userController = {
                 }
             })
 
-            if(!users) return res.status(404).json({ message: "Usuários não encontrados" })
+            if (!users) return res.status(404).json({ message: "Usuários não encontrados" })
 
             res.status(200).json({ users })
         } catch (e) {
@@ -38,7 +41,7 @@ export const userController = {
                 }
             })
 
-            if(!users) return res.status(404).json({ message: "Usuários não encontrados" })
+            if (!users) return res.status(404).json({ message: "Usuários não encontrados" })
 
             res.status(200).json({ users })
         } catch (e) {
@@ -57,28 +60,24 @@ export const userController = {
 
             if (!name || !email || !password) return res.status(400).json({ message: "Nome, email e senha são obrigatórios" })
 
-            const salt = 10
-            const secretKey: string | undefined = process.env.SECRET_KEY 
-            if (!secretKey) throw new Error('SECRET_KEY not set')
+            const user: User = {
+                'name': name,
+                'nickname': nickname,
+                'email': email,
+                'password': password,
+                'profile_photo': profile_photo
+            }
 
-            const hasPass = await bcrypt.hash(password, salt)
+            const create = await userService.createUser(user)
 
-            const user = await prisma.user.create({
-                data: {
-                    name,
-                    nickname,
-                    email,
-                    password: hasPass,
-                    profile_photo
-                }
-            })
+            res.status(201).json({ create })
+        } catch (e: any) {
+            if (e.message === "CREATE_FAILED") {
+                return res.status(404).json({ message: "Erro ao cadastrar usuário" });
+            }
 
-            const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: 60 * 60 })
-
-            res.status(201).json({ user, token })
-        } catch (e) {
-            console.log(e)
-            res.status(500).json()
+            console.error("Erro interno:", e);
+            return res.status(500).json({ message: "Erro interno!" });
         }
     }
 }
