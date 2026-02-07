@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:latest
+    image: ankane/pgvector:latest
     container_name: bookstore
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -11,8 +11,9 @@ services:
     env_file:
       - .env 
     volumes:
-      # MUDANÇA AQUI: Remova o "/data" do final do caminho do container
       - pgdata:/var/lib/postgresql 
+      # instalar extensão sozinha ao subir
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   pgdata:
