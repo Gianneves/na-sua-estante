@@ -36,7 +36,9 @@ const config: runtime.GetPrismaClientConfig = {
         "native": true
       }
     ],
-    "previewFeatures": [],
+    "previewFeatures": [
+      "postgresqlExtensions"
+    ],
     "sourceFilePath": "/home/gianneves/Área de trabalho/Projetos Pessoais/bookproject/backend/prisma/schema.prisma",
     "isCustomOutput": true
   },
@@ -55,8 +57,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id            String  @id @default(uuid(7)) @db.Uuid\n  name          String\n  nickname      String?\n  email         String  @unique\n  password      String\n  profile_photo String?\n}\n\nmodel Book {\n  id          String  @id @default(uuid(7)) @db.Uuid\n  title       String\n  category    String\n  price       Decimal @db.Decimal(10, 2)\n  description String\n  cover       String\n}\n",
-  "inlineSchemaHash": "ac7ba9daca4ad26414c0014f8c65fb70b5879f08ac219c0860e3f06218f3795a",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider        = \"prisma-client\"\n  output          = \"../src/generated\"\n  previewFeatures = [\"postgresqlExtensions\"]\n}\n\ndatasource db {\n  provider   = \"postgresql\"\n  url        = env(\"DATABASE_URL\")\n  extensions = [vector]\n}\n\nmodel User {\n  id            String  @id @default(uuid(7)) @db.Uuid\n  name          String\n  nickname      String?\n  email         String  @unique\n  password      String\n  profile_photo String?\n}\n\nmodel Book {\n  id          String                       @id @default(uuid(7)) @db.Uuid\n  title       String\n  category    String\n  price       Decimal                      @db.Decimal(10, 2)\n  description String\n  embedding   Unsupported(\"vector(1536)\")?\n  cover       String\n}\n",
+  "inlineSchemaHash": "621cd67f540ea402119014818651c81b20b6486cdc046d07d76e71f97d3c9a80",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
