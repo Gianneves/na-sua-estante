@@ -4,6 +4,6 @@ import { authMiddleware } from "../middleware/auth.ts";
 
 export const userRoutes = Router()
 
-userRoutes.get('/user', authMiddleware,userController.getOneUser)
+userRoutes.get('/user/:id', authMiddleware,userController.findUser)
 userRoutes.post('/', userController.createUser)
 userRoutes.get('/', userController.getUsers)

@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { error } from "console";
+
 
 export const userService = {
 
@@ -33,7 +33,40 @@ export const userService = {
         }
 
         const token = jwt.sign({ id: createUser.id }, secretKey, { expiresIn: 60 * 60 })
-       
+
         return { createUser, token }
+    },
+
+    findUser: async (id: string) => {
+
+        const user = await prisma.user.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        if (!user) {
+            throw new Error("NOT_FOUND")
+        }
+
+        return user
+    },
+
+    getUsers: async () => {
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                name: true,
+                nickname: true,
+                email: true,
+                profile_photo: true
+            }
+        })
+
+        if (!users) {
+            throw new Error("NOT_FOUND")
+        }
+
+        return users
     }
 }

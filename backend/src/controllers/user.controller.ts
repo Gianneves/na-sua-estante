@@ -1,55 +1,10 @@
 import type { Request, Response } from "express";
-import { prisma } from "../lib/prisma.ts";
 import dotenv from 'dotenv';
 dotenv.config();
-import * as bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { userService } from "../services/user.service.ts";
 import { User } from "../interfaces/user.interface.ts";
-import { createSecureServer } from "http2";
-
 
 export const userController = {
-
-    getOneUser: async (req: Request, res: Response) => {
-        try {
-            const users = await prisma.user.findMany({
-                select: {
-                    id: true,
-                    name: true,
-                    nickname: true,
-                    email: true,
-                }
-            })
-
-            if (!users) return res.status(404).json({ message: "Usuários não encontrados" })
-
-            res.status(200).json({ users })
-        } catch (e) {
-            res.status(500).json({ message: "error" })
-        }
-    },
-
-    getUsers: async (req: Request, res: Response) => {
-        try {
-            const users = await prisma.user.findMany({
-                select: {
-                    id: true,
-                    name: true,
-                    nickname: true,
-                    email: true,
-                }
-            })
-
-            if (!users) return res.status(404).json({ message: "Usuários não encontrados" })
-
-            res.status(200).json({ users })
-        } catch (e) {
-            res.status(500).json({ message: "error" })
-        }
-    },
-
-
     createUser: async (req: Request, res: Response) => {
         try {
             const { name,
@@ -79,5 +34,42 @@ export const userController = {
             console.error("Erro interno:", e);
             return res.status(500).json({ message: "Erro interno!" });
         }
-    }
+    },
+
+    findUser: async (req: Request, res: Response) => {
+        try {
+            
+            const { id } = req.params
+
+            if (!id) return res.status(400).json({ message: "parâmetro id não encontrado" })
+            
+             const user = await userService.findUser(id) 
+
+             res.status(200).json({ user })
+            
+        } catch (e: any) {
+             if (e.message === "NOT_FOUND") {
+                return res.status(404).json({ message: "Usuário não encontrado" });
+            }
+
+            console.error("Erro interno:", e);
+            return res.status(500).json({ message: "Erro interno!" });
+        }
+    },
+
+    getUsers: async (req: Request, res: Response) => {
+        try {
+            const users = await userService.getUsers()
+
+            res.status(200).json({ users })
+        } catch (e: any) {
+             if (e.message === "NOT_FOUND") {
+                return res.status(404).json({ message: "Usuários não encontrados" });
+            }
+
+            console.error("Erro interno:", e);
+            return res.status(500).json({ message: "Erro interno!" });
+        }
+    },
+
 }
