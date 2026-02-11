@@ -16,11 +16,11 @@ export const userController = {
             if (!name || !email || !password) return res.status(400).json({ message: "Nome, email e senha são obrigatórios" })
 
             const user: User = {
-                'name': name,
-                'nickname': nickname,
-                'email': email,
-                'password': password,
-                'profile_photo': profile_photo
+                "name": name,
+                "nickname": nickname,
+                "email": email,
+                "password": password,
+                "profile_photo": profile_photo
             }
 
             const create = await userService.createUser(user)
