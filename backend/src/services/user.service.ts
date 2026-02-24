@@ -63,7 +63,7 @@ export const userService = {
             }
         })
 
-        if (!users) {
+        if (users.length === 0) {
             throw new Error("NOT_FOUND")
         }
 
